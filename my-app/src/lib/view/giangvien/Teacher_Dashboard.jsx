@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../css/Teacher_style.css"
+import "../css/Teacher_style.css";
 import { Link } from "react-router-dom";
 
 const Teacher_Dashboard = () => {
@@ -17,7 +17,6 @@ const Teacher_Dashboard = () => {
     "📘 Lớp 11A có bài giảng mới được tải lên.",
   ];
 
-  // Dữ liệu thời khóa biểu mẫu
   const schedule = {
     Monday: [
       { subject: "Toán 12A", time: "7:30 - 9:00", room: "P101" },
@@ -30,13 +29,10 @@ const Teacher_Dashboard = () => {
     ],
     Thursday: [],
     Friday: [{ subject: "Anh văn 12A", time: "8:00 - 9:30", room: "P202" }],
-    Saturday: [
-      { subject: "Ôn thi THPT 12A", time: "7:30 - 9:00", room: "P105" },
-    ],
+    Saturday: [{ subject: "Ôn thi THPT 12A", time: "7:30 - 9:00", room: "P105" }],
     Sunday: [],
   };
 
-  // Thứ trong tuần để hiển thị
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const dayLabels = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
@@ -47,19 +43,19 @@ const Teacher_Dashboard = () => {
         <div className="sidebar-logo">
           <h2>👨‍🏫 Giảng Viên</h2>
         </div>
-            <ul className="sidebar-menu">
-              <li><Link to="/giangvien/Teacher_Dashboard"><span className="icon">🏠</span>Dashboard</Link></li>
-              <li><Link to="/giangvien/Teacher_Schedule"><span className="icon">📅</span>Lịch dạy</Link></li>
-              <li><Link to="/giangvien/Teacher_Track_Learning"><span className="icon">👥</span>Theo dõi</Link></li>
-              <li><Link to="/giangvien/Teacher_Class_Infor"><span className="icon">📋</span>Thông tin lớp học</Link></li>
-              <li><Link to="/giangvien/Teacher_Periods"><span className="icon">⏰</span>Số tiết dạy</Link></li>
-              <li><Link to="/giangvien/Teacher_Textbooks"><span className="icon">📘</span>Giáo trình</Link></li>
-              <li><Link to="/giangvien/Teacher_Debt"><span className="icon">💰</span>Công nợ cá nhân</Link></li>
-              <li><Link to="/giangvien/Teacher_Homework"><span className="icon">📝</span>Giao bài tập</Link></li>
-              <li><Link to="/giangvien/Teacher_Certificate"><span className="icon">🎓</span>Chứng chỉ</Link></li>
-              <li><Link to="/giangvien/Teacher_Setting"><span className="icon">⚙️</span>Cài đặt</Link></li>
-              <li><Link to="/"><span className="icon">🚪</span>Đăng xuất</Link></li>
-            </ul>
+        <ul className="sidebar-menu">
+          <li><Link to="/giangvien/Teacher_Dashboard"><span className="icon">🏠</span>Dashboard</Link></li>
+          <li><Link to="/giangvien/Teacher_Schedule"><span className="icon">📅</span>Lịch dạy</Link></li>
+          <li><Link to="/giangvien/Teacher_Track_Learning"><span className="icon">👥</span>Theo dõi</Link></li>
+          <li><Link to="/giangvien/Teacher_Class_Infor"><span className="icon">📋</span>Thông tin lớp học</Link></li>
+          <li><Link to="/giangvien/Teacher_Periods"><span className="icon">⏰</span>Số tiết dạy</Link></li>
+          <li><Link to="/giangvien/Teacher_Textbooks"><span className="icon">📘</span>Giáo trình</Link></li>
+          <li><Link to="/giangvien/Teacher_Debt"><span className="icon">💰</span>Công nợ cá nhân</Link></li>
+          <li><Link to="/giangvien/Teacher_Homework"><span className="icon">📝</span>Giao bài tập</Link></li>
+          <li><Link to="/giangvien/Teacher_Certificate"><span className="icon">🎓</span>Chứng chỉ</Link></li>
+          <li><Link to="/giangvien/Teacher_Setting"><span className="icon">⚙️</span>Cài đặt</Link></li>
+          <li><Link to="/"><span className="icon">🚪</span>Đăng xuất</Link></li>
+        </ul>
       </aside>
 
       {/* Main Content */}
@@ -70,6 +66,37 @@ const Teacher_Dashboard = () => {
           <div className="user-info">
             <span>Chào, Cô Lan</span>
             <div className="avatar">L</div>
+          </div>
+        </div>
+
+        {/* 👉 Đưa thời khóa biểu lên đầu */}
+        <div className="calendar-grid">
+          <div className="calendar-header">
+            <h3>Thời khóa biểu giảng dạy</h3>
+          </div>
+
+          <div className="calendar-days">
+            {dayLabels.map((label, i) => (
+              <div key={i} className="day-header">{label}</div>
+            ))}
+          </div>
+
+          <div className="calendar-body">
+            {days.map((day, i) => (
+              <div key={i} className="calendar-day">
+                <div className="day-number">{dayLabels[i]}</div>
+                {schedule[day].length > 0 ? (
+                  schedule[day].map((cls, j) => (
+                    <div key={j} className="class-event">
+                      <strong>{cls.subject}</strong><br />
+                      <small>{cls.time} | {cls.room}</small>
+                    </div>
+                  ))
+                ) : (
+                  <div style={{ color: "#718096", fontSize: "13px" }}>Không có lịch</div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -109,39 +136,6 @@ const Teacher_Dashboard = () => {
                 <li key={i}>{note}</li>
               ))}
             </ul>
-          </div>
-        </div>
-
-        {/* Thời khóa biểu */}
-        <div className="calendar-grid">
-          <div className="calendar-header">
-            <h3>Thời khóa biểu giảng dạy</h3>
-          </div>
-
-          {/* Tiêu đề ngày trong tuần */}
-          <div className="calendar-days">
-            {dayLabels.map((label, i) => (
-              <div key={i} className="day-header">{label}</div>
-            ))}
-          </div>
-
-          {/* Lịch từng ngày */}
-          <div className="calendar-body">
-            {days.map((day, i) => (
-              <div key={i} className="calendar-day">
-                <div className="day-number">{dayLabels[i]}</div>
-                {schedule[day].length > 0 ? (
-                  schedule[day].map((cls, j) => (
-                    <div key={j} className="class-event">
-                      <strong>{cls.subject}</strong><br />
-                      <small>{cls.time} | {cls.room}</small>
-                    </div>
-                  ))
-                ) : (
-                  <div style={{ color: "#718096", fontSize: "13px" }}>Không có lịch</div>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       </main>

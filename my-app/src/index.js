@@ -46,7 +46,7 @@ root.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        {/* Các route của Admin */}
+        {/* Các route của Admin 
         <Route path="/admin/Admin_Dashboard" element={<Admin_Dashboard />} />
         <Route path="/admin/Admin_Class_Management" element={<Admin_Class_Management />} />
         <Route path="/admin/Admin_Certificate_Management" element={<Admin_Certificate_Management />} />
@@ -56,7 +56,7 @@ root.render(
         <Route path="/admin/Admin_Room_Management" element={<Admin_Room_Management />} />
         <Route path="/admin/Admin_finance" element={<Admin_finance />} />
         <Route path="/admin/Admin_Notice_Management" element={<Admin_Notice_Management />} />
-        <Route path="/admin/Admin_Setting" element={<Admin_Setting />} />
+        <Route path="/admin/Admin_Setting" element={<Admin_Setting />} />*/}
 
         {/* Các route của giangvien 
         <Route path="/giangvien/Teacher_Dashboard" element={<Teacher_Dashboard />} />
@@ -70,9 +70,9 @@ root.render(
         <Route path="/giangvien/Teacher_Certificate" element={<Teacher_Certificate />} />
         <Route path="/giangvien/Teacher_Setting" element={<Teacher_Setting />} />
         <Route path="/giangvien/Teacher_Roll_Call" element={<Teacher_Roll_Call />} />
-        <Route path="/giangvien/Teacher_Score" element={<Teacher_Score />} />*/}
+        <Route path="/giangvien/Teacher_Score" element={<Teacher_Score />} />* /}
         
-        {/* ROUTE CHO HỌC VIÊN 
+        {/* ROUTE CHO HỌC VIÊN */}
         <Route path="/hocvien/Student_Dashboard" element={<Student_Dashboard />} />
         <Route path="/hocvien/Student_Registerclass" element={<Student_Registerclass />} />
         <Route path="/hocvien/Student_Schoolscheduelue" element={<Student_Schoolscheduelue />} />
@@ -83,10 +83,10 @@ root.render(
         <Route path="/hocvien/Student_Attendanceinformation" element={<Student_Attendanceinformation />} />
         <Route path="/hocvien/Student_Homework" element={<Student_Homework />} />
         <Route path="/hocvien/Student_Certificate" element={<Student_Certificate />} />
-        <Route path="/hocvien/Student_Setting" element={<Student_Setting />} />*/}
+        <Route path="/hocvien/Student_Setting" element={<Student_Setting />} />
 
         {/* Mặc định mở Dashboard */}
-        <Route path="*" element={<Admin_Dashboard />} />
+        <Route path="*" element={<Student_Dashboard />} />
       </Routes>
     </Router>
   </React.StrictMode>

@@ -84,7 +84,7 @@ export default function StudentDashboard() {
 
           </div>
 
-          <div className="tab-content" id="grades-tab">
+          <div className="tab-content active " id="grades-tab">
             <h3>Bảng điểm học tập</h3>
             <div className="class-table">
               <table className="table">

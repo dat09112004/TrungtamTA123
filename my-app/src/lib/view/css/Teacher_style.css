@@ -150,6 +150,9 @@ body {
 .sidebar-menu li {
     margin: 5px 0;
 }
+.container.active {
+    display: block;
+}
 
 .sidebar-menu a {
     display: flex;
@@ -834,6 +837,164 @@ body {
   justify-content: flex-end;
   margin-top: 15px;
   gap: 10px;
+}
+.edit-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.edit-form {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  width: 400px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.edit-form h3 {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.edit-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.edit-form input {
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.save-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+/* Nền mờ phía sau form */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Form chỉnh sửa */
+.modal {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 350px;
+  max-width: 90%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Tiêu đề form */
+.modal h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #2d3748;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* Nhãn input */
+.modal label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+/* Input, select */
+.modal input, 
+.modal select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 0.2s ease;
+}
+
+.modal input:focus,
+.modal select:focus {
+  border-color: #3182ce;
+  outline: none;
+}
+
+/* Nút */
+.modal button {
+  margin-top: 15px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.modal button:first-of-type {
+  background: #3182ce;
+  color: white;
+  margin-right: 10px;
+}
+
+.modal button:first-of-type:hover {
+  background: #2b6cb0;
+}
+
+.modal button:last-of-type {
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+.modal button:last-of-type:hover {
+  background: #cbd5e0;
+}
+
+/* Animation khi mở form */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {

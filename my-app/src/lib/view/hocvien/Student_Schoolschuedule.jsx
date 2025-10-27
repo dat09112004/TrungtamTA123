@@ -178,11 +178,6 @@ export default function StudentSchoolSchedule() {
               </tbody>
             </table>
           </div>
-
-          {/* Ghi chú */}
-          <div style={{ marginTop: "20px", fontStyle: "italic", color: "#666" }}>
-            <p>💡 Mẹo: Dùng nút “◀ Trước / Sau ▶” để xem lịch học các ngày khác.</p>
-          </div>
         </main>
       </div>
     </div>

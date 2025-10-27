@@ -14,7 +14,7 @@ export default function Admin_Subject_Management() {
   ]);
 
   const [showForm, setShowForm] = useState(false);
-  const [formMode, setFormMode] = useState("add"); // add | edit | view
+  const [formMode, setFormMode] = useState("add"); 
   const [selectedId, setSelectedId] = useState(null);
   const [formData, setFormData] = useState({
     id: "",

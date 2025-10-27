@@ -11,6 +11,7 @@ export default function Admin_finance() {
       amount: 3000000,
       dueDate: "2025-11-10",
       status: "Chưa nộp",
+      type: "Thu", // ✅ thêm type
     },
     {
       id: "HV002",
@@ -19,12 +20,14 @@ export default function Admin_finance() {
       amount: 2500000,
       dueDate: "2025-10-30",
       status: "Đã nộp",
+      type: "Thu",
     },
   ]);
 
+  const [expenses, setExpenses] = useState([]); // ✅ danh sách chi tiêu
   const [showForm, setShowForm] = useState(false);
-  const [formMode, setFormMode] = useState("add"); // add | edit | view
-  const [selectedId, setSelectedId] = useState(null);
+  const [formMode, setFormMode] = useState("add");
+  const [formType, setFormType] = useState("Thu"); // ✅ Thu hoặc Chi
   const [formData, setFormData] = useState({
     id: "",
     studentName: "",
@@ -32,16 +35,17 @@ export default function Admin_finance() {
     amount: "",
     dueDate: "",
     status: "Chưa nộp",
+    note: "",
   });
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("Tất cả trạng thái");
 
-  const openForm = (mode, data = null) => {
+  const openForm = (mode, type = "Thu", data = null) => {
     setFormMode(mode);
+    setFormType(type);
     setShowForm(true);
     if (data) {
-      setSelectedId(data.id);
       setFormData(data);
     } else {
       setFormData({
@@ -51,31 +55,50 @@ export default function Admin_finance() {
         amount: "",
         dueDate: "",
         status: "Chưa nộp",
+        note: "",
       });
     }
   };
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formMode === "add") {
-      setRecords([...records, formData]);
-      alert("✅ Đã thêm công nợ mới!");
-    } else if (formMode === "edit") {
-      setRecords(records.map((r) => (r.id === selectedId ? formData : r)));
-      alert("✏️ Đã cập nhật công nợ!");
+    if (formType === "Thu") {
+      setRecords([...records, { ...formData, type: "Thu" }]);
+      alert("✅ Đã thêm khoản thu mới!");
+    } else {
+      setExpenses([
+        ...expenses,
+        {
+          id: `CHI${expenses.length + 1}`,
+          description: formData.note,
+          amount: Number(formData.amount),
+          date: formData.dueDate,
+        },
+      ]);
+      alert("💸 Đã thêm khoản chi!");
     }
     setShowForm(false);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Bạn có chắc muốn xóa công nợ này không?")) {
-      setRecords(records.filter((r) => r.id !== id));
+  const handleDelete = (id, type) => {
+    if (window.confirm("Bạn có chắc muốn xóa khoản này không?")) {
+      if (type === "Thu") setRecords(records.filter((r) => r.id !== id));
+      else setExpenses(expenses.filter((e) => e.id !== id));
     }
   };
 
-  // Tìm kiếm và lọc
+  // ✅ Tính toán tổng
+  const totalIncome = records
+    .filter((r) => r.status === "Đã nộp")
+    .reduce((sum, r) => sum + Number(r.amount), 0);
+
+  const totalExpense = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const balance = totalIncome - totalExpense;
+
+  // ✅ Lọc danh sách
   const filteredRecords = records.filter((r) => {
     const matchesSearch = r.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus =
@@ -106,7 +129,30 @@ export default function Admin_finance() {
         <main className="main-content">
           <div className="header">
             <h1>Quản lý tài chính</h1>
-            <button className="create-btn" onClick={() => openForm("add")}>+ Thêm công nợ</button>
+            <div>
+              <button className="create-btn" onClick={() => openForm("add", "Thu")}>
+                + Thêm công nợ
+              </button>
+              <button className="expense-btn" onClick={() => openForm("add", "Chi")}>
+                💸 Thêm chi tiêu
+              </button>
+            </div>
+          </div>
+
+          {/* ✅ Tổng hợp Thu - Chi */}
+          <div className="summary-box">
+            <div className="summary-item income">
+              <h3>💰 Tổng thu</h3>
+              <p>{totalIncome.toLocaleString()} đ</p>
+            </div>
+            <div className="summary-item expense">
+              <h3>💸 Tổng chi</h3>
+              <p>{totalExpense.toLocaleString()} đ</p>
+            </div>
+            <div className="summary-item balance">
+              <h3>📊 Lợi nhuận</h3>
+              <p>{balance.toLocaleString()} đ</p>
+            </div>
           </div>
 
           {/* FORM POPUP */}
@@ -114,47 +160,64 @@ export default function Admin_finance() {
             <div className="form-popup">
               <div className="form-container">
                 <h2>
-                  {formMode === "add"
-                    ? "Thêm công nợ mới"
-                    : formMode === "edit"
-                    ? "Chỉnh sửa công nợ"
-                    : "Chi tiết công nợ"}
+                  {formType === "Thu" ? "Thêm khoản thu" : "Thêm chi tiêu"}
                 </h2>
                 <form onSubmit={handleSubmit}>
-                  <label>Mã học viên *</label><input type="text" name="id" value={formData.id} onChange={handleChange} required disabled={formMode === "view"} />
-                  <label>Họ tên học viên *</label><input type="text" name="studentName" value={formData.studentName} onChange={handleChange} required disabled={formMode === "view"} />
-                  <label>Lớp *</label><input type="text" name="className" value={formData.className} onChange={handleChange} required disabled={formMode === "view"} />
-                  <label>Số tiền *</label><input type="number" name="amount" value={formData.amount} onChange={handleChange} required disabled={formMode === "view"} />
-                  <label>Hạn nộp *</label><input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} required disabled={formMode === "view"} />
-                  <label>Trạng thái *</label>
-                  <select name="status" value={formData.status} onChange={handleChange} disabled={formMode === "view"}>
-                    <option>Đã nộp</option><option>Chưa nộp</option>
-                  </select>
+                  {formType === "Thu" ? (
+                    <>
+                      <label>Mã học viên *</label>
+                      <input type="text" name="id" value={formData.id}
+                        onChange={handleChange} required />
+                      <label>Họ tên học viên *</label>
+                      <input type="text" name="studentName" value={formData.studentName}
+                        onChange={handleChange} required />
+                      <label>Lớp *</label>
+                      <input type="text" name="className" value={formData.className}
+                        onChange={handleChange} required />
+                      <label>Số tiền *</label>
+                      <input type="number" name="amount" value={formData.amount}
+                        onChange={handleChange} required />
+                      <label>Hạn nộp *</label>
+                      <input type="date" name="dueDate" value={formData.dueDate}
+                        onChange={handleChange} required />
+                      <label>Trạng thái *</label>
+                      <select name="status" value={formData.status}
+                        onChange={handleChange}>
+                        <option>Đã nộp</option>
+                        <option>Chưa nộp</option>
+                      </select>
+                    </>
+                  ) : (
+                    <>
+                      <label>Nội dung chi tiêu *</label>
+                      <input type="text" name="note" value={formData.note}
+                        onChange={handleChange} required />
+                      <label>Số tiền *</label>
+                      <input type="number" name="amount" value={formData.amount}
+                        onChange={handleChange} required />
+                      <label>Ngày chi *</label>
+                      <input type="date" name="dueDate" value={formData.dueDate}
+                        onChange={handleChange} required />
+                    </>
+                  )}
+
                   <div className="form-actions">
-                    {formMode !== "view" && <button type="submit" className="save-btn">💾 Lưu</button>}
-                    <button type="button" className="cancel-btn" onClick={() => setShowForm(false)}>{formMode === "view" ? "🔙 Đóng" : "❌ Hủy"}</button>
+                    <button type="submit" className="save-btn">💾 Lưu</button>
+                    <button type="button" className="cancel-btn" onClick={() => setShowForm(false)}>❌ Hủy</button>
                   </div>
                 </form>
               </div>
             </div>
           )}
 
-          {/* TÌM KIẾM + LỌC */}
-          <div className="filters">
-            <input type="text" className="filter-input" placeholder="🔍 Tìm kiếm theo mã học viên..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-            <select className="filter-input" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-              <option>Tất cả trạng thái</option>
-              <option>Đã nộp</option>
-              <option>Chưa nộp</option>
-            </select>
-          </div>
-
-          {/* BẢNG DỮ LIỆU */}
+          {/* BẢNG THU */}
+          <h2>📈 Danh sách khoản thu</h2>
           <div className="class-table">
             <table className="table">
               <thead>
                 <tr>
-                  <th>Mã HV</th><th>Học viên</th><th>Lớp</th><th>Số tiền</th><th>Hạn nộp</th><th>Trạng thái</th><th>Thao tác</th>
+                  <th>Mã HV</th><th>Học viên</th><th>Lớp</th>
+                  <th>Số tiền</th><th>Hạn nộp</th><th>Trạng thái</th><th>Thao tác</th>
                 </tr>
               </thead>
               <tbody>
@@ -167,17 +230,50 @@ export default function Admin_finance() {
                       <td>{r.amount.toLocaleString()} đ</td>
                       <td>{r.dueDate}</td>
                       <td>
-                        <span className={`status-badge ${r.status === "Đã nộp" ? "status-active" : "status-inactive"}`}>{r.status}</span>
+                        <span className={`status-badge ${r.status === "Đã nộp" ? "status-active" : "status-inactive"}`}>
+                          {r.status}
+                        </span>
                       </td>
                       <td>
-                        <button className="action-btn btn-edit" onClick={() => openForm("view", r)}>👁️ Xem</button>
-                        <button className="action-btn btn-edit" onClick={() => openForm("edit", r)}>✏️ Sửa</button>
-                        <button className="action-btn btn-delete" onClick={() => handleDelete(r.id)}>🗑️ Xóa</button>
+                        <button className="action-btn btn-delete" onClick={() => handleDelete(r.id, "Thu")}>
+                          🗑️ Xóa
+                        </button>
                       </td>
                     </tr>
                   ))
                 ) : (
-                  <tr><td colSpan="7" style={{ textAlign: "center" }}>Không có dữ liệu phù hợp</td></tr>
+                  <tr><td colSpan="7" style={{ textAlign: "center" }}>Không có dữ liệu</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* BẢNG CHI */}
+          <h2>💸 Danh sách khoản chi</h2>
+          <div className="class-table">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Mã chi</th><th>Nội dung</th><th>Số tiền</th><th>Ngày chi</th><th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                {expenses.length > 0 ? (
+                  expenses.map((e) => (
+                    <tr key={e.id}>
+                      <td>{e.id}</td>
+                      <td>{e.description}</td>
+                      <td>{e.amount.toLocaleString()} đ</td>
+                      <td>{e.date}</td>
+                      <td>
+                        <button className="action-btn btn-delete" onClick={() => handleDelete(e.id, "Chi")}>
+                          🗑️ Xóa
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr><td colSpan="5" style={{ textAlign: "center" }}>Chưa có khoản chi nào</td></tr>
                 )}
               </tbody>
             </table>
