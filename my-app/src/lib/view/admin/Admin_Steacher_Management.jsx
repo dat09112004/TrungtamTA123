@@ -2,143 +2,109 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/Admin_style.css";
 
-export default function Admin_Class_Management() {
+export default function Admin_Steacher_Management() {
   const [showForm, setShowForm] = useState(false);
   const [formMode, setFormMode] = useState("add"); // add | edit | view
-  const [selectedClassId, setSelectedClassId] = useState(null);
-  const [classes, setClasses] = useState([
+  const [selectedId, setSelectedId] = useState(null);
+
+  // Dữ liệu mẫu giáo viên
+  const [teachers, setTeachers] = useState([
     {
-      id: "A204",
-      className: "Tiếng Anh - IELTS",
-      subject: "IELTS Advanced",
-      teachers: ["Cô Phạm Thị D"],
-      schedule: "T3, T5, T7 (19:00 - 20:30)",
-      studentCount: "15/20",
-      description: "Lớp luyện thi IELTS nâng cao.",
+      id: "GV001",
+      name: "Cô Trần Mai",
+      phone: "0905123456",
+      password: "abc123",
       status: "Hoạt động",
-      room: "A106",
+    },
+    {
+      id: "GV002",
+      name: "Thầy Nguyễn Văn An",
+      phone: "0912345678",
+      password: "pass456",
+      status: "Tạm dừng",
     },
   ]);
 
+  // Dữ liệu form
   const [formData, setFormData] = useState({
-    className: "",
-    subject: "",
-    teachers: [],
-    schedule: "",
-    studentCount: "",
-    description: "",
+    name: "",
+    phone: "",
+    password: "",
+    status: "Hoạt động",
   });
 
-  const teachersList = ["Cô Trần Mai", "Thầy Lê Tùng", "Cô Nguyễn Vy"];
-
-  // Mở form popup
-  const openForm = (mode, classData = null) => {
+  // Mở form
+  const openForm = (mode, teacher = null) => {
     setFormMode(mode);
     setShowForm(true);
 
     if (mode === "edit" || mode === "view") {
-      setSelectedClassId(classData.id);
+      setSelectedId(teacher.id);
       setFormData({
-        className: classData.className,
-        subject: classData.subject,
-        teachers: classData.teachers,
-        schedule: classData.schedule,
-        studentCount: classData.studentCount.replace("/20", ""),
-        description: classData.description,
+        name: teacher.name,
+        phone: teacher.phone,
+        password: teacher.password,
+        status: teacher.status,
       });
     } else {
       setFormData({
-        className: "",
-        subject: "",
-        teachers: [],
-        schedule: "",
-        studentCount: "",
-        description: "",
+        name: "",
+        phone: "",
+        password: "",
+        status: "Hoạt động",
       });
     }
   };
 
-  // Thay đổi giá trị input
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  // Chọn/bỏ chọn giảng viên
-  const handleTeacherSelect = (teacher) => {
-    if (formMode === "view") return;
-    const updated = formData.teachers.includes(teacher)
-      ? formData.teachers.filter((t) => t !== teacher)
-      : [...formData.teachers, teacher];
-    setFormData({ ...formData, teachers: updated });
-  };
-
-  // Lưu khi thêm hoặc sửa
+  // Lưu dữ liệu
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (formMode === "add") {
-      const newClass = {
-        id: "C" + (classes.length + 1),
-        className: formData.className,
-        subject: formData.subject,
-        teachers: formData.teachers,
-        schedule: formData.schedule,
-        studentCount: `${formData.studentCount}/20`,
-        description: formData.description,
-        status: "Hoạt động",
-        room: "A10" + (classes.length + 1),
+      const newTeacher = {
+        id: "GV" + String(teachers.length + 1).padStart(3, "0"),
+        ...formData,
       };
-      setClasses([...classes, newClass]);
-      alert("✅ Đã thêm lớp học mới!");
-    }
-
-    if (formMode === "edit") {
-      const updated = classes.map((cls) =>
-        cls.id === selectedClassId
-          ? {
-              ...cls,
-              className: formData.className,
-              subject: formData.subject,
-              teachers: formData.teachers,
-              schedule: formData.schedule,
-              studentCount: `${formData.studentCount}/20`,
-              description: formData.description,
-            }
-          : cls
+      setTeachers([...teachers, newTeacher]);
+      alert("✅ Đã thêm giáo viên mới!");
+    } else if (formMode === "edit") {
+      setTeachers(
+        teachers.map((t) =>
+          t.id === selectedId ? { ...t, ...formData } : t
+        )
       );
-      setClasses(updated);
-      alert("✏️ Đã cập nhật thông tin lớp!");
+      alert("✏️ Đã cập nhật thông tin giáo viên!");
     }
-
     setShowForm(false);
   };
 
-  // Xóa lớp
+  // Xóa giáo viên
   const handleDelete = (id) => {
-    if (window.confirm("Bạn có chắc muốn xóa lớp này không?")) {
-      setClasses(classes.filter((cls) => cls.id !== id));
+    if (window.confirm("Bạn có chắc muốn xóa giáo viên này không?")) {
+      setTeachers(teachers.filter((t) => t.id !== id));
     }
   };
 
+  // Xử lý thay đổi input
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
   return (
-    <div className="container active" id="class-management">
+    <div className="container active" id="teacher-management">
       <div className="dashboard">
         {/* SIDEBAR */}
         <nav className="sidebar">
-          <div className="sidebar-logo">
-            <h2>📚 Admin Panel</h2>
-          </div>
+          <div className="sidebar-logo"><h2>📚 Admin Panel</h2></div>
           <ul className="sidebar-menu">
             <li><Link to="/admin/Admin_Dashboard">🏠 Dashboard</Link></li>
-            <li><Link to="/admin/Admin_Student_Management">👥 Quản lý học viên</Link></li>
-            <li><Link to="/admin/Admin_Steacher_Management">👨‍🏫 Quản lý Giáo viên</Link></li>
+            <li><Link to="/admin/Admin_Student_Management">👥 Quản lý Học viên</Link></li>
+            <li><Link to="/admin/Admin_Steacher_Management" className="active">👨‍🏫 Quản lý Giáo viên</Link></li>
             <li><Link to="/admin/Admin_Class_Management">📝 Quản lý Lớp học</Link></li>
             <li><Link to="/admin/Admin_Subject_Management">📚 Quản lý Môn học</Link></li>
-            <li><Link to="/admin/Admin_Room_Management">🚪 Quản lý phòng học</Link></li>
-            <li><Link to="/admin/Admin_Certificate_Management">🎓 Quản lý chứng chỉ</Link></li>
+            <li><Link to="/admin/Admin_Room_Management">🚪 Quản lý Phòng học</Link></li>
+            <li><Link to="/admin/Admin_Certificate_Management">🎓 Quản lý Chứng chỉ</Link></li>
             <li><Link to="/admin/Admin_finance">💰 Quản lý Tài chính</Link></li>
-            <li><Link to="/admin/admin_Notice_Management">📢 Quản lý Thông Báo</Link></li>
+            <li><Link to="/admin/admin_Notice_Management">📢 Quản lý Thông báo</Link></li>
             <li><Link to="/admin/Admin_Setting">⚙️ Cài đặt</Link></li>
             <li><Link to="/">❌ Đăng xuất</Link></li>
           </ul>
@@ -147,106 +113,74 @@ export default function Admin_Class_Management() {
         {/* MAIN CONTENT */}
         <main className="main-content">
           <div className="header">
-            <h1>Quản lý Lớp học</h1>
+            <h1>👨‍🏫 Quản lý Giáo viên</h1>
             <button className="create-btn" onClick={() => openForm("add")}>
-              + Tạo Lớp Mới
+              + Thêm giáo viên
             </button>
           </div>
 
-          {/* FORM POPUP */}
+          {/* POPUP FORM */}
           {showForm && (
             <div className="form-popup">
               <div className="form-container">
                 <h2>
                   {formMode === "add"
-                    ? "Thêm Lớp Học Mới"
+                    ? "Thêm Giáo viên mới"
                     : formMode === "edit"
-                    ? "Chỉnh Sửa Lớp Học"
-                    : "Chi Tiết Lớp Học"}
+                    ? "Chỉnh sửa Giáo viên"
+                    : "Chi tiết Giáo viên"}
                 </h2>
 
                 <form onSubmit={handleSubmit}>
-                  <h3 className="section-title">Thông tin Lớp học</h3>
-                  <label>Tên Lớp *</label>
+                  <label>Họ và tên *</label>
                   <input
                     type="text"
-                    name="className"
-                    placeholder="Ví dụ: IELTS Cấp tốc B2"
-                    value={formData.className}
+                    name="name"
+                    placeholder="Nhập họ tên giáo viên"
+                    value={formData.name}
                     onChange={handleChange}
                     required
                     disabled={formMode === "view"}
                   />
 
-                  <label>Khóa học (Môn học) *</label>
+                  <label>Số điện thoại *</label>
                   <input
-                    type="text"
-                    name="subject"
-                    placeholder="Ví dụ: IELTS Advanced"
-                    value={formData.subject}
+                    type="tel"
+                    name="phone"
+                    placeholder="VD: 0905123456"
+                    value={formData.phone}
                     onChange={handleChange}
+                    pattern="[0-9]{10}"
+                    title="Số điện thoại gồm 10 chữ số"
                     required
                     disabled={formMode === "view"}
                   />
 
-                  <h3 className="section-title">Phân công & Lịch trình</h3>
-                  <label>Phân công Giảng viên *</label>
-                  <div className="teacher-select">
-                    {teachersList.map((teacher) => (
-                      <button
-                        key={teacher}
-                        type="button"
-                        className={
-                          formData.teachers.includes(teacher)
-                            ? "teacher-btn active"
-                            : "teacher-btn"
-                        }
-                        onClick={() => handleTeacherSelect(teacher)}
-                        disabled={formMode === "view"}
-                      >
-                        {teacher}
-                      </button>
-                    ))}
-                  </div>
-
-                  <label>Lịch học chi tiết *</label>
+                  <label>Mật khẩu *</label>
                   <input
-                    type="text"
-                    name="schedule"
-                    placeholder="Ví dụ: T3, T5, T7 (19:00 - 20:30)"
-                    value={formData.schedule}
+                    type="password"
+                    name="password"
+                    placeholder="Nhập mật khẩu"
+                    value={formData.password}
                     onChange={handleChange}
                     required
                     disabled={formMode === "view"}
                   />
 
-                  <label>Số lượng Học viên dự kiến *</label>
-                  <input
-                    type="number"
-                    name="studentCount"
-                    placeholder="Nhập số lượng học viên"
-                    value={formData.studentCount}
+                  <label>Trạng thái *</label>
+                  <select
+                    name="status"
+                    value={formData.status}
                     onChange={handleChange}
-                    required
                     disabled={formMode === "view"}
-                  />
-
-                  <h3 className="section-title">Mô tả</h3>
-                  <label>Mô tả lớp học</label>
-                  <textarea
-                    name="description"
-                    placeholder="Mô tả mục tiêu, yêu cầu đầu vào của lớp..."
-                    value={formData.description}
-                    onChange={handleChange}
-                    rows="3"
-                    disabled={formMode === "view"}
-                  ></textarea>
+                  >
+                    <option>Hoạt động</option>
+                    <option>Tạm dừng</option>
+                  </select>
 
                   <div className="form-actions">
                     {formMode !== "view" && (
-                      <button type="submit" className="save-btn">
-                        💾 Lưu
-                      </button>
+                      <button type="submit" className="save-btn">💾 Lưu</button>
                     )}
                     <button
                       type="button"
@@ -261,16 +195,12 @@ export default function Admin_Class_Management() {
             </div>
           )}
 
-          {/* BẢNG LỚP HỌC */}
+          {/* DANH SÁCH GIÁO VIÊN */}
           <div className="filters">
-            <input
-              type="text"
-              className="filter-input"
-              placeholder="🔍 Tìm kiếm theo tên lớp..."
-            />
+            <input type="text" className="filter-input" placeholder="🔍 Tìm kiếm theo tên..." />
             <select className="filter-input">
               <option>Tất cả trạng thái</option>
-              <option>Đang hoạt động</option>
+              <option>Hoạt động</option>
               <option>Tạm dừng</option>
             </select>
           </div>
@@ -279,38 +209,37 @@ export default function Admin_Class_Management() {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Mã lớp</th>
-                  <th>Tên lớp</th>
-                  <th>Giáo viên phụ trách</th>
-                  <th>Số học viên</th>
-                  <th>Phòng</th>
-                  <th>Tình trạng</th>
+                  <th>Mã GV</th>
+                  <th>Họ và Tên</th>
+                  <th>Số điện thoại</th>
+                  <th>Mật khẩu</th>
+                  <th>Trạng thái</th>
                   <th>Thao tác</th>
                 </tr>
               </thead>
               <tbody>
-                {classes.map((cls) => (
-                  <tr key={cls.id}>
-                    <td><strong>{cls.id}</strong></td>
-                    <td>{cls.className}</td>
-                    <td>{cls.teachers.join(", ")}</td>
-                    <td>{cls.studentCount}</td>
-                    <td>{cls.room}</td>
+                {teachers.map((t) => (
+                  <tr key={t.id}>
+                    <td><strong>{t.id}</strong></td>
+                    <td>{t.name}</td>
+                    <td>{t.phone}</td>
+
+                    {/* 🔒 Ẩn mật khẩu trong bảng */}
+                    <td>{"•".repeat(t.password.length)}</td>
+
                     <td>
                       <span
                         className={`status-badge ${
-                          cls.status === "Hoạt động"
-                            ? "status-active"
-                            : "status-inactive"
+                          t.status === "Hoạt động" ? "status-active" : "status-inactive"
                         }`}
                       >
-                        {cls.status}
+                        {t.status}
                       </span>
                     </td>
                     <td>
-                      <button className="action-btn btn-edit" onClick={() => openForm("view", cls)}>👁️ Xem</button>
-                      <button className="action-btn btn-edit" onClick={() => openForm("edit", cls)}>✏️ Sửa</button>
-                      <button className="action-btn btn-delete" onClick={() => handleDelete(cls.id)}>🗑️ Xóa</button>
+                      <button className="action-btn btn-edit" onClick={() => openForm("view", t)}>👁️ Xem</button>
+                      <button className="action-btn btn-edit" onClick={() => openForm("edit", t)}>✏️ Sửa</button>
+                      <button className="action-btn btn-delete" onClick={() => handleDelete(t.id)}>🗑️ Xóa</button>
                     </td>
                   </tr>
                 ))}

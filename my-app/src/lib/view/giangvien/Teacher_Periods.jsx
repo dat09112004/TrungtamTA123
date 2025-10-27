@@ -12,30 +12,14 @@ export default function TeacherPeriods() {
     { id: 5, subject: "Sinh học", className: "11C", date: "2025-10-18", lessons: 2, hours: 1.5 },
   ]);
 
-  const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterMonth, setFilterMonth] = useState("Tất cả");
 
-  const [newPeriod, setNewPeriod] = useState({
-    subject: "",
-    className: "",
-    date: "",
-    lessons: "",
-    hours: "",
-  });
-
-  // ====== TÍNH TỔNG ======
+  // ====== TÍNH TOÁN ======
   const totalLessons = periods.reduce((sum, p) => sum + p.lessons, 0);
   const totalHours = periods.reduce((sum, p) => sum + p.hours, 0);
   const totalSubjects = new Set(periods.map((p) => p.subject)).size;
-
-  // ====== MỞ / ĐÓNG MODAL ======
-  const openModal = () => setShowModal(true);
-  const closeModal = () => {
-    setShowModal(false);
-    setNewPeriod({ subject: "", className: "", date: "", lessons: "", hours: "" });
-  };
-
+  const totalSalary = totalLessons * 100000; // 100k / tiết
 
   // ====== TÌM KIẾM & LỌC ======
   const filteredPeriods = periods.filter((p) => {
@@ -106,7 +90,7 @@ export default function TeacherPeriods() {
             </select>
           </div>
 
-          {/* Tổng kết */}
+          {/* Thống kê */}
           <div className="stats-grid">
             <div className="stat-card classes">
               <div className="stat-number">{totalHours}</div>
@@ -120,6 +104,11 @@ export default function TeacherPeriods() {
               <div className="stat-number">{totalSubjects}</div>
               <div className="stat-label">Số môn giảng dạy</div>
             </div>
+            {/* 💰 Lương */}
+            <div className="stat-card salary">
+              <div className="stat-number">{totalSalary.toLocaleString()} đ</div>
+              <div className="stat-label">Tổng lương giảng dạy</div>
+            </div>
           </div>
 
           {/* BẢNG CHI TIẾT */}
@@ -132,6 +121,7 @@ export default function TeacherPeriods() {
                   <th>Lớp</th>
                   <th>Số tiết</th>
                   <th>Số giờ</th>
+                  <th>Thành tiền</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,16 +133,25 @@ export default function TeacherPeriods() {
                       <td>{p.className}</td>
                       <td>{p.lessons}</td>
                       <td>{p.hours}</td>
+                      <td>{(p.lessons * 100000).toLocaleString()} đ</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" style={{ textAlign: "center", color: "#888" }}>
+                    <td colSpan="6" style={{ textAlign: "center", color: "#888" }}>
                       Không có dữ liệu phù hợp.
                     </td>
                   </tr>
                 )}
               </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "right", fontWeight: "bold" }}>Tổng cộng:</td>
+                  <td style={{ fontWeight: "bold", color: "#2e7d32" }}>
+                    {totalSalary.toLocaleString()} đ
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </main>

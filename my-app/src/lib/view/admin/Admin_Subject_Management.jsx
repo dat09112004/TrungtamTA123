@@ -4,9 +4,13 @@ import { Link } from "react-router-dom";
 
 export default function Admin_Subject_Management() {
   const [subjects, setSubjects] = useState([
-    { id: "MH001", name: "IELTS Advanced", syllabus: "ielts_advanced.pdf", status: "Đang hoạt động" },
-    { id: "MH002", name: "TOEIC Intensive", syllabus: "toeic_intensive.pdf", status: "Tạm dừng" },
-    { id: "MH003", name: "Tin học cơ bản", syllabus: "basic_computer.pdf", status: "Đang hoạt động" },
+    { id: "MH001", name: "Tiếng Anh Giao Tiếp A1", syllabus: "english_communication_a1.pdf", status: "Đang hoạt động" },
+    { id: "MH002", name: "Ngữ Pháp Tiếng Anh B1", syllabus: "english_grammar_b1.pdf", status: "Đang hoạt động" },
+    { id: "MH003", name: "Kỹ Năng Nghe - Nói Tiếng Anh", syllabus: "english_listening_speaking.pdf", status: "Tạm dừng" },
+    { id: "MH004", name: "Tin Học Văn Phòng Cơ Bản", syllabus: "basic_office_it.pdf", status: "Đang hoạt động" },
+    { id: "MH005", name: "Luyện Thi IELTS Advanced", syllabus: "ielts_advanced.pdf", status: "Đang hoạt động" },
+    { id: "MH006", name: "TOEIC Intensive", syllabus: "toeic_intensive.pdf", status: "Tạm dừng" },
+    { id: "MH007", name: "Kỹ Năng Thuyết Trình", syllabus: "presentation_skills.pdf", status: "Đang hoạt động" },
   ]);
 
   const [showForm, setShowForm] = useState(false);
@@ -19,7 +23,7 @@ export default function Admin_Subject_Management() {
     status: "Đang hoạt động",
   });
 
-  // Trạng thái lọc + tìm kiếm
+  // Tìm kiếm + lọc
   const [searchId, setSearchId] = useState("");
   const [searchName, setSearchName] = useState("");
   const [filterStatus, setFilterStatus] = useState("Tất cả trạng thái");
@@ -37,7 +41,6 @@ export default function Admin_Subject_Management() {
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  // Upload file giáo trình
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -65,7 +68,7 @@ export default function Admin_Subject_Management() {
     }
   };
 
-  // Lọc và tìm kiếm dữ liệu
+  // Lọc dữ liệu theo tìm kiếm
   const filteredSubjects = subjects.filter((s) => {
     const matchId = s.id.toLowerCase().includes(searchId.toLowerCase());
     const matchName = s.name.toLowerCase().includes(searchName.toLowerCase());
@@ -84,7 +87,7 @@ export default function Admin_Subject_Management() {
             <li><Link to="/admin/Admin_Student_Management">👥 Quản lý học viên</Link></li>
             <li><Link to="/admin/Admin_Steacher_Management">👨‍🏫 Quản lý Giáo viên</Link></li>
             <li><Link to="/admin/Admin_Class_Management">📝 Quản lý Lớp học</Link></li>
-            <li><Link to="/admin/Admin_Subject_Management">📚 Quản lý Môn học</Link></li>
+            <li><Link to="/admin/Admin_Subject_Management" className="active">📚 Quản lý Môn học</Link></li>
             <li><Link to="/admin/Admin_Room_Management">🚪 Quản lý phòng học</Link></li>
             <li><Link to="/admin/Admin_Certificate_Management">🎓 Quản lý chứng chỉ</Link></li>
             <li><Link to="/admin/Admin_finance">💰 Quản lý Tài chính</Link></li>
@@ -105,18 +108,25 @@ export default function Admin_Subject_Management() {
           {showForm && (
             <div className="form-popup">
               <div className="form-container">
-                <h2>{formMode === "add" ? "Thêm môn học mới" : formMode === "edit" ? "Chỉnh sửa môn học" : "Chi tiết môn học"}</h2>
+                <h2>
+                  {formMode === "add" ? "Thêm môn học mới" :
+                   formMode === "edit" ? "Chỉnh sửa môn học" : "Chi tiết môn học"}
+                </h2>
+
                 <form onSubmit={handleSubmit}>
                   <label>Mã môn</label>
                   <input type="text" name="id" value={formData.id} disabled placeholder="Tự động tạo" />
+
                   <label>Tên môn học *</label>
                   <input type="text" name="name" value={formData.name} onChange={handleChange} required disabled={formMode === "view"} />
+
                   <label>Giáo trình *</label>
                   {formMode === "view" ? (
                     <input type="text" value={formData.syllabus} disabled />
                   ) : (
                     <input type="file" name="syllabus" accept=".pdf,.doc,.docx" onChange={handleFileUpload} />
                   )}
+
                   <label>Tình trạng *</label>
                   <select name="status" value={formData.status} onChange={handleChange} disabled={formMode === "view"}>
                     <option>Đang hoạt động</option>
@@ -134,7 +144,7 @@ export default function Admin_Subject_Management() {
             </div>
           )}
 
-          {/* THANH TÌM KIẾM + LỌC */}
+          {/* BỘ LỌC + TÌM KIẾM */}
           <div className="filters">
             <input
               type="text"

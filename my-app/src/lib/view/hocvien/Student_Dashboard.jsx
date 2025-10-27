@@ -14,20 +14,20 @@ export default function StudentDashboard() {
           <div className="sidebar-logo">
             <h2>👨‍🎓 Học viên</h2>
           </div>
-          <ul className="student-menu">
-            <li><Link to="/student/dashboard">🏠 Trang chủ</Link></li>
-            <li><Link to="/student/register-class">📅 Đăng ký lớp học</Link></li>
-            <li><Link to="/student/school-schedule">📘 Lịch học</Link></li>
-            <li><Link to="/student/score">📊 Điểm số</Link></li>
-            <li><Link to="/student/fee">💰 Học phí</Link></li>
-            <li><Link to="/student/noti">📢 Thông báo</Link></li>
-            <li><Link to="/student/course-materials">📚 Tài liệu</Link></li>
-            <li><Link to="/student/attendance-information">🕒 Điểm danh</Link></li>
-            <li><Link to="/student/homework">📝 Bài tập</Link></li>
-            <li><Link to="/student/certificate">🎓 Chứng chỉ</Link></li>
-            <li><Link to="/student/setting">⚙️ Cài đặt</Link></li>
-            <li><Link to="/">🚪 Đăng xuất</Link></li>
-          </ul>
+            <ul className="sidebar-menu">
+              <li><Link to="/hocvien/Student_Dashboard">🏠 Trang chủ</Link></li>
+              <li><Link to="/hocvien/Student_Registerclass">📅 Đăng ký lớp học</Link></li>
+              <li><Link to="/hocvien/Student_Schoolscheduelue">📘 Lịch học</Link></li>
+              <li><Link to="/hocvien/Student_Score">📊 Điểm số</Link></li>
+              <li><Link to="/hocvien/Student_Fee">💰 Học phí</Link></li>
+              <li><Link to="/hocvien/Student_Noti">📢 Thông báo</Link></li>
+              <li><Link to="/hocvien/Student_Coursematerials">📚 Tài liệu</Link></li>
+              <li><Link to="/hocvien/Student_Attendanceinformation">🕒 Điểm danh</Link></li>
+              <li><Link to="/hocvien/Student_Homework">📝 Bài tập</Link></li>
+              <li><Link to="/hocvien/Student_Certificate">🎓 Chứng chỉ</Link></li>
+              <li><Link to="/hocvien/Student_Setting">⚙️ Cài đặt</Link></li>
+              <li><Link to="/">🚪 Đăng xuất</Link></li>
+            </ul>
         </nav>
 
         <main className="main-content">
