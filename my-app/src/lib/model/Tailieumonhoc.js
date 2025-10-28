@@ -1,24 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
-  const GiaoTrinh = sequelize.define('GiaoTrinh', {
-    IdGiaotrinh: { 
+  const TaiLieuMon = sequelize.define('TaiLieuMon', {
+    IdTaiLieu: { 
       type: DataTypes.INTEGER, 
       primaryKey: true, 
       autoIncrement: true 
     },
-    TenGiaotrinh: { 
+    TieuDe: { 
       type: DataTypes.STRING, 
       allowNull: false 
     },
     MoTa: { 
-      type: DataTypes.TEXT 
-    },
-    NgayPhatHanh: { 
-      type: DataTypes.DATE, 
-      defaultValue: DataTypes.NOW 
+      type: DataTypes.TEXT, 
+      allowNull: true 
     },
     TepTin: { 
-      type: DataTypes.STRING, // đường dẫn file upload (PDF, docx,...)
+      type: DataTypes.STRING, 
       allowNull: true 
+    },
+    NgayDang: { 
+      type: DataTypes.DATE, 
+      defaultValue: DataTypes.NOW 
     },
     IdMonHoc: { 
       type: DataTypes.INTEGER,
@@ -31,25 +32,25 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'Giangvien', key: 'IdGiangvien' },
-      onDelete: 'CASCADE',
+      onDelete: 'SET NULL',
       onUpdate: 'CASCADE'
     }
   }, {
-    tableName: 'GiaoTrinh',
+    tableName: 'TaiLieuMon',
     timestamps: false
   });
 
-  // Quan hệ với các bảng khác
-  GiaoTrinh.associate = (models) => {
-    GiaoTrinh.belongsTo(models.MonHoc, {
-      foreignKey: 'IdMonHoc',
-      as: 'monhoc'
+  // Thiết lập quan hệ
+  TaiLieuMon.associate = (models) => {
+    TaiLieuMon.belongsTo(models.MonHoc, { 
+      foreignKey: 'IdMonHoc', 
+      as: 'monhoc' 
     });
-    GiaoTrinh.belongsTo(models.Giangvien, {
-      foreignKey: 'IdGiangvien',
-      as: 'giangvien'
+    TaiLieuMon.belongsTo(models.Giangvien, { 
+      foreignKey: 'IdGiangvien', 
+      as: 'giangvien' 
     });
   };
 
-  return GiaoTrinh;
+  return TaiLieuMon;
 };
