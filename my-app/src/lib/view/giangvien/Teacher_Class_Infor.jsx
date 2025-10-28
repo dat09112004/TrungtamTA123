@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from "../css/Teacher_style.module.css";
+import "../css/Teacher_style.css";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function TeacherClassInfor() {

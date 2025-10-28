@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "../css/Student_style.module.css";
+import "../css/Student_style.css";
 import { Link } from "react-router-dom";
 
 export default function StudentCertificate() {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import styles from "../css/Teacher_style.module.css";
+import "../css/Teacher_style.css";
 
 export default function TeacherCertificate() {
   // ----- DỮ LIỆU MẪU -----
