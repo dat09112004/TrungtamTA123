@@ -1,17 +1,18 @@
-* {
+/* ---------------------- Reset ---------------------- */
+:global(*) {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;
 }
 
-body {
+:global(body) {
   background-color: #f7f9fc;
   color: #333;
 }
 
-/* Header */
-header {
+/* ---------------------- Header ---------------------- */
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -20,7 +21,7 @@ header {
   padding: 10px 40px;
 }
 
-.logo-title {
+.logoTitle {
   display: flex;
   align-items: center;
 }
@@ -30,19 +31,19 @@ header {
   margin-right: 10px;
 }
 
-.logo-title h1 {
+.logoTitle h1 {
   font-size: 20px;
   font-weight: 600;
 }
 
-/* Layout */
-main {
+/* ---------------------- Layout ---------------------- */
+.main {
   display: flex;
   justify-content: space-between;
   padding: 30px 40px;
 }
 
-/* Announcements */
+/* ---------------------- Announcements ---------------------- */
 .announcements {
   width: 65%;
 }
@@ -87,6 +88,7 @@ main {
 .link {
   color: red;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .hot {
@@ -107,8 +109,8 @@ main {
   margin-left: 5px;
 }
 
-/* Login box */
-.login-box {
+/* ---------------------- Login Box ---------------------- */
+.loginBox {
   background: white;
   width: 30%;
   padding: 20px;
@@ -116,7 +118,7 @@ main {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.login-box h2 {
+.loginBox h2 {
   background-color: #005bb5;
   color: white;
   text-align: center;
@@ -125,13 +127,13 @@ main {
   margin-bottom: 20px;
 }
 
-.login-box label {
+.loginBox label {
   display: block;
   font-size: 14px;
   margin-bottom: 5px;
 }
 
-.login-box input {
+.loginBox input {
   width: 100%;
   padding: 8px;
   margin-bottom: 12px;
@@ -139,23 +141,28 @@ main {
   border-radius: 6px;
 }
 
-.login-btn {
-  background: #ff6600;
+/* ---------------------- Buttons ---------------------- */
+.loginBtn {
+  background: linear-gradient(45deg, #ff6600, #ff9900);
   color: white;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  padding: 12px;
   border: none;
-  width: 100%;
-  padding: 10px;
-  font-weight: 600;
   border-radius: 8px;
+  width: 100%;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  transition: background 0.3s ease;
 }
 
-.login-btn:hover {
-  background: #e65c00;
+.loginBtn:hover {
+  background: linear-gradient(45deg, #e65c00, #ff8800);
 }
 
-.support-box {
+/* ---------------------- Support Box ---------------------- */
+.supportBox {
   background-color: #f2f7ff;
   border: 1px solid #d1e3ff;
   border-radius: 8px;
@@ -164,18 +171,50 @@ main {
   font-size: 14px;
 }
 
-.support-box h3 {
+.supportBox h3 {
   color: #3A8DDE;
   margin-bottom: 8px;
   font-size: 15px;
 }
 
-.support-box p {
+.supportBox p {
   margin: 4px 0;
 }
 
-/* Footer */
-footer {
+/* ---------------------- Input Box ---------------------- */
+.inputBox {
+  position: relative;
+}
+
+.inputBox input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-size: 15px;
+}
+
+.inputBox input:focus {
+  border-color: #005bb5;
+  box-shadow: 0 0 5px rgba(0, 91, 181, 0.3);
+}
+
+.inputBox input::placeholder {
+  color: #aaa;
+}
+
+/* ---------------------- Form ---------------------- */
+.loginForm label {
+  color: #333;
+  font-weight: 500;
+  margin-top: 10px;
+  display: block;
+}
+
+/* ---------------------- Footer ---------------------- */
+.footer {
   text-align: center;
   padding: 15px;
   background: #005bb5;
@@ -183,13 +222,22 @@ footer {
   margin-top: auto;
 }
 
-/* Responsive */
+/* ---------------------- Container ---------------------- */
+.loginPageContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #f7f9fc, #eef5ff);
+}
+
+/* ---------------------- Responsive ---------------------- */
 @media (max-width: 900px) {
-  main {
+  .main {
     flex-direction: column;
     align-items: center;
   }
-  .announcements, .login-box {
+  .announcements,
+  .loginBox {
     width: 100%;
   }
 }

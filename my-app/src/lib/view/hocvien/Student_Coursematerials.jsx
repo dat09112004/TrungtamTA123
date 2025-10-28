@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import '../css/Student_style.css';
+import styles from "../css/Student_style.module.css";
 import { Link } from "react-router-dom";
+
 
 export default function StudentCourseMaterials() {
   const [selectedCourse, setSelectedCourse] = useState(null);
